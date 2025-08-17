@@ -20,5 +20,5 @@ it("Test for lib/trie", function()
   trie:insert("foo2")
   trie:insert("bar")
 
-  assert_same_set({ "foo", "foo1", "foo2" }, trie:search("foo"))
+  assert_same_set({ "foo", "foo1", "foo2" }, trie:search("foo", 20))
 end)

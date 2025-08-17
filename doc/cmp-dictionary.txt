@@ -110,7 +110,7 @@ first_case_insensitive ~
 
 				      *cmp-dictionary-option-max_number_items*
 max_number_items ~
-	integer (default: 0)
+	integer (default: 20)
 
 	This is the maximum number of items that this source will return to
 	the nvim-cmp body. Less than or equal to 0 means no limit.

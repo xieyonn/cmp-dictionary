@@ -52,8 +52,9 @@ function M:update(paths, force)
 end
 
 ---@param prefix string
+---@param max_number_items number
 ---@return lsp.CompletionItem[]
-function M:search(prefix)
+function M:search(prefix, max_number_items)
   local items = {}
   for _, path in ipairs(self.paths) do
     local trie = self.trie_map[path]
@@ -61,7 +62,7 @@ function M:search(prefix)
       -- The dictionary has not yet been loaded.
     else
       local info = string.format("belong to `%s`", vim.fn.fnamemodify(path, ":t"))
-      for _, word in ipairs(trie:search(prefix)) do
+      for _, word in ipairs(trie:search(prefix, max_number_items)) do
         table.insert(items, { label = word, info = info })
       end
     end

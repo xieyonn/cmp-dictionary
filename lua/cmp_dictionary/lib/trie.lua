@@ -30,22 +30,10 @@ function Trie:insert(word)
   current.end_of_word = true
 end
 
----@private
----@param node TrieNode
 ---@param prefix string
----@param word_list string[]
-function Trie:search_prefix(node, prefix, word_list)
-  if node.end_of_word then
-    table.insert(word_list, prefix)
-  end
-  for char, child in pairs(node.children) do
-    self:search_prefix(child, prefix .. char, word_list)
-  end
-end
-
----@param prefix string
+---@param max_number_items number
 ---@return string[]
-function Trie:search(prefix)
+function Trie:search(prefix, max_number_items)
   local node = self.root
   for char in vim.gsplit(prefix, "") do
     node = node.children[char]
@@ -54,7 +42,25 @@ function Trie:search(prefix)
     end
   end
   local word_list = {}
-  self:search_prefix(node, prefix, word_list)
+
+  local count = 0
+  local stack = { { node = node, path = prefix } }
+  while #stack > 0 and count <= max_number_items do
+    local current = table.remove(stack)
+
+    if current.node.end_of_word then
+      table.insert(word_list, current.path)
+      count = count + 1
+    end
+
+    for char, child in pairs(current.node.children) do
+      table.insert(stack, {
+        node = child,
+        path = prefix .. char,
+      })
+    end
+  end
+
   return word_list
 end
 
